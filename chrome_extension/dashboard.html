@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESET AI - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="nav">
+            <button class="nav-item active" data-page="home">
+                <span class="nav-icon">📊</span>
+                <span>Dashboard</span>
+            </button>
+            <button class="nav-item" data-page="history">
+                <span class="nav-icon">📜</span>
+                <span>History</span>
+            </button>
+            <button class="nav-item" data-page="analytics">
+                <span class="nav-icon">📈</span>
+                <span>Analytics</span>
+            </button>
+            <button class="nav-item" data-page="settings">
+                <span class="nav-icon">⚙️</span>
+                <span>Settings</span>
+            </button>
+        </nav>
+
+        <!-- Home Page -->
+        <div id="page-home" class="page active">
+            <div class="page-content">
+                <!-- User Card -->
+                <div class="user-card">
+                    <img id="user-avatar" class="avatar" src="" alt="Avatar">
+                    <div class="user-info">
+                        <h2 id="user-name">User</h2>
+                        <p id="user-email">email@example.com</p>
+                    </div>
+                    <div class="score-badge">
+                        <span id="focus-score">75</span>
+                        <span class="score-label">Focus</span>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-num" id="stat-visits">0</span>
+                        <span class="stat-label">Visits</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num" id="stat-domains">0</span>
+                        <span class="stat-label">Domains</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num" id="stat-distractions">0</span>
+                        <span class="stat-label">Distractions</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num" id="stat-today">0</span>
+                        <span class="stat-label">Today</span>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="section">
+                    <h3 class="section-title">Recent Activity</h3>
+                    <div id="recent-list" class="list">
+                        <!-- Skeleton Loaders -->
+                        <div class="skeleton-box skeleton"></div>
+                        <div class="skeleton-box skeleton"></div>
+                        <div class="skeleton-box skeleton"></div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="actions">
+                    <button id="capture-btn" class="btn btn-primary">📸 Capture Now</button>
+                    <button id="sync-btn" class="btn btn-secondary">🔄 Refresh</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Page -->
+        <div id="page-history" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2>Browsing History</h2>
+                    <span id="history-count" class="badge">Loading...</span>
+                </div>
+                <div id="history-list" class="list">
+                    <!-- Skeleton Loaders -->
+                    <div class="skeleton-box skeleton"></div>
+                    <div class="skeleton-box skeleton"></div>
+                    <div class="skeleton-box skeleton"></div>
+                    <div class="skeleton-box skeleton"></div>
+                    <div class="skeleton-box skeleton"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Page -->
+        <div id="page-analytics" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2>Insights & Analytics</h2>
+                    <button id="web-analytics-btn" class="badge-btn">🌐 View Full</button>
+                </div>
+
+                <div class="analytics-card">
+                    <div class="card-header">
+                        <h4>Focus Trend</h4>
+                    </div>
+                    <div class="mini-chart" id="focus-trend-chart">
+                        <!-- Simplified trend view -->
+                        <div class="empty">Analytics data syncing...</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Top Workspaces</h3>
+                    <div id="top-workspaces-list" class="list">
+                        <div class="empty">No data yet</div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <p>For detailed cognitive flow analysis and personalized AI recommendations, visit your web
+                        dashboard.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="page-settings" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2>Settings</h2>
+                </div>
+
+                <!-- Profile Card -->
+                <div class="profile-card">
+                    <img id="settings-avatar" class="avatar-lg" src="" alt="Avatar">
+                    <h3 id="settings-name">User</h3>
+                    <p id="settings-email">email@example.com</p>
+                </div>
+
+                <!-- Edit Name -->
+                <div class="card">
+                    <div class="input-group">
+                        <label>Display Name</label>
+                        <input type="text" id="edit-name" placeholder="Your name">
+                    </div>
+                    <button id="save-btn" class="btn btn-primary">Save Changes</button>
+                </div>
+
+                <!-- Preferences -->
+                <div class="card">
+                    <h4>Preferences</h4>
+                    <div class="toggle-row">
+                        <span>Auto-capture</span>
+                        <label class="toggle">
+                            <input type="checkbox" id="pref-auto" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row">
+                        <span>Notifications</span>
+                        <label class="toggle">
+                            <input type="checkbox" id="pref-notif" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Account -->
+                <div class="card">
+                    <h4>Account</h4>
+                    <button id="web-btn" class="btn btn-secondary full">🌐 Open Web Dashboard</button>
+                    <button id="logout-btn" class="btn btn-danger full">Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dist/dashboard.bundle.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // USERS - Profile and Preferences
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /users/{userId}/{allSegments=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // USER DATA - Application Activity, Contexts, Sessions
+    match /userData/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /userData/{userId}/{allSegments=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // SYSTEM - Public assets
+    match /public/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // GLOBAL DEFAULT - Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

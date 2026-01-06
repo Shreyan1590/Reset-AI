@@ -1,0 +1,204 @@
+{
+    "sampleUsers": [
+        {
+            "id": "user_001",
+            "email": "student@example.com",
+            "displayName": "Alex Student",
+            "persona": "Student",
+            "settings": {
+                "aiSensitivity": 7,
+                "privacyLevel": "balanced",
+                "backupEnabled": true,
+                "syncEnabled": true
+            }
+        },
+        {
+            "id": "user_002",
+            "email": "developer@example.com",
+            "displayName": "Sam Developer",
+            "persona": "Developer",
+            "settings": {
+                "aiSensitivity": 5,
+                "privacyLevel": "minimal",
+                "backupEnabled": true,
+                "syncEnabled": false
+            }
+        },
+        {
+            "id": "user_003",
+            "email": "professional@example.com",
+            "displayName": "Jordan Pro",
+            "persona": "Professional",
+            "settings": {
+                "aiSensitivity": 6,
+                "privacyLevel": "full",
+                "backupEnabled": true,
+                "syncEnabled": true
+            }
+        }
+    ],
+    "sampleSessions": [
+        {
+            "id": "session_001",
+            "userId": "user_001",
+            "startTime": "2024-12-27T09:00:00Z",
+            "endTime": "2024-12-27T11:30:00Z",
+            "status": "completed",
+            "interruptions": 5,
+            "contextLossEvents": 2,
+            "timeRecovered": 480
+        },
+        {
+            "id": "session_002",
+            "userId": "user_002",
+            "startTime": "2024-12-27T14:00:00Z",
+            "endTime": null,
+            "status": "active",
+            "interruptions": 3,
+            "contextLossEvents": 1,
+            "timeRecovered": 180
+        }
+    ],
+    "sampleContexts": [
+        {
+            "id": "ctx_001",
+            "userId": "user_001",
+            "sessionId": "session_001",
+            "capturedAt": "2024-12-27T09:15:00Z",
+            "type": "document",
+            "data": {
+                "url": "https://docs.google.com/document/d/abc123",
+                "title": "Research Paper: Machine Learning Basics",
+                "scrollPosition": 2500,
+                "selectedText": "Neural networks are computational models..."
+            },
+            "summary": "Writing research paper on ML fundamentals",
+            "keyPoints": [
+                "Chapter 3: Neural Networks",
+                "Section on backpropagation",
+                "Due date: January 15th"
+            ],
+            "nextSteps": [
+                "Complete backpropagation explanation",
+                "Add diagrams for layer visualization",
+                "Write conclusion section"
+            ],
+            "isRecovered": true
+        },
+        {
+            "id": "ctx_002",
+            "userId": "user_002",
+            "sessionId": "session_002",
+            "capturedAt": "2024-12-27T14:30:00Z",
+            "type": "code",
+            "data": {
+                "url": "https://github.com/user/project/blob/main/src/auth.js",
+                "title": "auth.js - Project Repository",
+                "scrollPosition": 850,
+                "selectedText": "async function validateToken(token) {"
+            },
+            "summary": "Implementing token validation for authentication",
+            "keyPoints": [
+                "Working on auth.js file",
+                "JWT token validation",
+                "Error handling for expired tokens"
+            ],
+            "nextSteps": [
+                "Complete validateToken function",
+                "Add refresh token logic",
+                "Write unit tests"
+            ],
+            "isRecovered": false
+        },
+        {
+            "id": "ctx_003",
+            "userId": "user_003",
+            "sessionId": "session_003",
+            "capturedAt": "2024-12-27T10:45:00Z",
+            "type": "tab",
+            "data": {
+                "url": "https://mail.google.com/mail/u/0/#inbox/abc123",
+                "title": "Q4 Budget Review - Email",
+                "scrollPosition": 0,
+                "selectedText": ""
+            },
+            "summary": "Reviewing Q4 budget email from finance team",
+            "keyPoints": [
+                "Q4 Budget Review meeting request",
+                "Spreadsheet needs approval",
+                "Deadline: December 30th"
+            ],
+            "nextSteps": [
+                "Review attached spreadsheet",
+                "Send approval or feedback",
+                "Schedule follow-up meeting"
+            ],
+            "isRecovered": true
+        },
+        {
+            "id": "ctx_004",
+            "userId": "user_001",
+            "sessionId": "session_001",
+            "capturedAt": "2024-12-27T10:00:00Z",
+            "type": "tab",
+            "data": {
+                "url": "https://www.khanacademy.org/computing/computer-science/algorithms",
+                "title": "Algorithms - Khan Academy",
+                "scrollPosition": 1200,
+                "selectedText": ""
+            },
+            "summary": "Studying algorithms course on Khan Academy",
+            "keyPoints": [
+                "Algorithm complexity analysis",
+                "Big O notation section",
+                "Practice problems pending"
+            ],
+            "nextSteps": [
+                "Complete current lesson",
+                "Do practice exercises",
+                "Move to sorting algorithms"
+            ],
+            "isRecovered": true
+        }
+    ],
+    "sampleActivityLogs": [
+        {
+            "id": "log_001",
+            "userId": "user_002",
+            "timestamp": "2024-12-27T14:25:00Z",
+            "eventType": "tab_switch",
+            "metadata": {
+                "fromUrl": "https://github.com/user/project",
+                "toUrl": "https://stackoverflow.com/questions/123"
+            }
+        },
+        {
+            "id": "log_002",
+            "userId": "user_002",
+            "timestamp": "2024-12-27T14:28:00Z",
+            "eventType": "idle",
+            "metadata": {
+                "duration": 180000
+            }
+        },
+        {
+            "id": "log_003",
+            "userId": "user_002",
+            "timestamp": "2024-12-27T14:31:00Z",
+            "eventType": "return",
+            "metadata": {
+                "previousContext": "ctx_002"
+            }
+        },
+        {
+            "id": "log_004",
+            "userId": "user_002",
+            "timestamp": "2024-12-27T14:32:00Z",
+            "eventType": "recovery",
+            "metadata": {
+                "contextId": "ctx_002",
+                "action": "resume"
+            }
+        }
+    ]
+}

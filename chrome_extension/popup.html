@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RESET AI</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- Loading -->
+    <div id="loading" class="container center">
+      <div class="logo">🧠</div>
+      <p class="loading-text">Loading...</p>
+    </div>
+
+    <!-- Login -->
+    <div id="login-ui" class="container" style="display:none;">
+      <div class="header">
+        <div class="logo">🧠</div>
+        <h1>RESET AI</h1>
+        <p class="subtitle">Sign in to continue</p>
+      </div>
+
+      <form id="login-form" class="form">
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="login-btn">Sign In</button>
+        <div id="login-error" class="error"></div>
+      </form>
+
+      <p class="switch-text">Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+      <p class="info-text">Use Email/Password to sign in. Google login is available on the web app.</p>
+    </div>
+
+    <!-- Signup -->
+    <div id="signup-ui" class="container" style="display:none;">
+      <div class="header">
+        <div class="logo">🧠</div>
+        <h1>Create Account</h1>
+        <p class="subtitle">Join RESET AI</p>
+      </div>
+
+      <form id="signup-form" class="form">
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" id="signup-name" placeholder="Enter your full name" required>
+        </div>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="signup-email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="signup-password" placeholder="Min 6 characters" required minlength="6">
+        </div>
+        <div class="input-group">
+          <label>Confirm Password</label>
+          <input type="password" id="signup-confirm" placeholder="Confirm your password" required minlength="6">
+        </div>
+        <button type="submit" class="btn btn-primary" id="signup-btn">Create Account</button>
+        <div id="signup-error" class="error"></div>
+      </form>
+
+      <p class="switch-text">Already have an account? <a href="#" id="show-login">Sign In</a></p>
+    </div>
+
+    <!-- Password Setup Modal for Google Users -->
+    <div id="password-setup-ui" class="container" style="display:none;">
+      <div class="header">
+        <div class="logo">🔐</div>
+        <h1>Set Password</h1>
+        <p class="subtitle">Required for extension access</p>
+      </div>
+
+      <div class="info-box">
+        <p>To use RESET AI in Chrome Extension, please set a password for your account.</p>
+      </div>
+
+      <form id="password-setup-form" class="form">
+        <div class="input-group">
+          <label>New Password</label>
+          <input type="password" id="setup-password" placeholder="Min 6 characters" required minlength="6">
+        </div>
+        <div class="input-group">
+          <label>Confirm Password</label>
+          <input type="password" id="setup-confirm" placeholder="Confirm your password" required minlength="6">
+        </div>
+        <button type="submit" class="btn btn-primary" id="setup-btn">Set Password</button>
+        <div id="setup-error" class="error"></div>
+      </form>
+
+      <p class="switch-text"><a href="#" id="cancel-setup">Cancel and Sign Out</a></p>
+    </div>
+  </div>
+
+  <script src="dist/popup.bundle.js"></script>
+</body>
+
+</html>

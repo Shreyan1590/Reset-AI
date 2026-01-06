@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.dart_tool/
+.pub-cache/
+.pub/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.gradle/
+Pods/
+
+# Build artifacts
+build/
+dist/
+
+*.crx
+*.pem
+*.zip
+*.log
+analysis_results.txt
+build-log.txt
+build_errors.txt
+build_output.txt
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.iml

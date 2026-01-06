@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "RESET AI - Context Recovery",
+  "version": "2.0.0",
+  "description": "Detect context loss and restore your thinking state instantly",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "idle",
+    "identity"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "https://*.googleapis.com/*",
+    "https://*.firebaseapp.com/*",
+    "https://firestore.googleapis.com/*",
+    "https://identitytoolkit.googleapis.com/*",
+    "https://accounts.google.com/*"
+  ],
+  "background": {
+    "service_worker": "dist/background.bundle.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "RESET AI",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "icons/*",
+        "dist/*",
+        "styles.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
