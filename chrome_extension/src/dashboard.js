@@ -68,7 +68,7 @@ async function loadDashboard(user) {
             type: 'SET_USER',
             userId: user.uid,
             authToken: await user.getIdToken()
-        });
+        }).catch(() => { }); // Silently handle if background is unavailable
     } catch (e) { }
 
     setupListeners(user.uid);
@@ -110,7 +110,7 @@ async function savePreference(key, value) {
         });
         showToast('Preference saved', 'success');
         // Let background script know
-        chrome.runtime.sendMessage({ type: 'UPDATE_PREFERENCES', preferences: { [key]: value } });
+        chrome.runtime.sendMessage({ type: 'UPDATE_PREFERENCES', preferences: { [key]: value } }).catch(() => { });
     } catch (e) {
         console.error('Save preference error:', e);
     }
@@ -122,7 +122,7 @@ async function logoutUser() {
 
     await signOut(auth);
     await chrome.storage.local.remove(['userId', 'userEmail', 'userName']);
-    chrome.runtime.sendMessage({ type: 'USER_LOGOUT' });
+    chrome.runtime.sendMessage({ type: 'USER_LOGOUT' }).catch(() => { });
     window.location.href = 'popup.html';
 }
 
@@ -381,12 +381,15 @@ async function captureNow() {
     const btn = document.getElementById('capture-btn');
     if (btn) { btn.disabled = true; btn.textContent = '📸 Capturing...'; }
 
-    chrome.runtime.sendMessage({ type: 'CAPTURE_NOW' }, (response) => {
+    chrome.runtime.sendMessage({ type: 'CAPTURE_NOW' }).then((response) => {
         setTimeout(() => {
             if (currentUser) loadRecentActivity(currentUser.uid);
             if (btn) { btn.disabled = false; btn.textContent = '📸 Capture Now'; }
             showToast('Activity captured!', 'success');
         }, 800);
+    }).catch(() => {
+        if (btn) { btn.disabled = false; btn.textContent = '📸 Capture Now'; }
+        showToast('Capture failed', 'error');
     });
 }
 

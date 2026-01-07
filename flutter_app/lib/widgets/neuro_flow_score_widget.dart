@@ -146,7 +146,8 @@ class NeuroFlowScoreWidget extends StatelessWidget {
               ],
             ],
           ),
-        );
+        ),
+        ); // Close InkWell
       }
     );
   }

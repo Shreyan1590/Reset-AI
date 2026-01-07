@@ -260,7 +260,7 @@ class _DashboardState extends State<Dashboard> {
     final menuItems = [
       {'icon': Icons.dashboard_outlined, 'label': 'Dash'},
       {'icon': Icons.history, 'label': 'History'},
-      {'icon': Icons.analytics_outlined, 'label': 'Analytics'},
+      {'icon': Icons.analytics_outlined, 'label': 'Stats'},
       {'icon': Icons.settings_outlined, 'label': 'Settings'},
     ];
 

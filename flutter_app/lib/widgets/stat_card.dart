@@ -110,7 +110,8 @@ class StatCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ],
-      ),
-    );
+      ), // Close Column
+      ), // Close Ink
+    ); // Close InkWell
   }
 }

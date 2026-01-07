@@ -239,22 +239,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             userId = message.userId;
             authToken = message.authToken;
             chrome.storage.local.set({ userId, authToken });
-            // Fetch preferences from Firestore
+            // Fetch preferences from Firestore (non-blocking)
             getDoc(doc(db, 'users', userId)).then(snap => {
                 if (snap.exists() && snap.data().preferences) {
                     chrome.storage.local.set({ preferences: snap.data().preferences });
                 }
-            });
+            }).catch(err => console.error('Pref fetch error:', err));
             sendResponse({ success: true });
-            break;
+            return false; // Sync response
 
         case 'UPDATE_PREFERENCES':
             chrome.storage.local.get(['preferences']).then(res => {
                 const updated = { ...(res.preferences || {}), ...message.preferences };
                 chrome.storage.local.set({ preferences: updated });
-            });
+            }).catch(err => console.error('Pref update error:', err));
             sendResponse({ success: true });
-            break;
+            return false; // Sync response
 
         case 'USER_LOGOUT':
             userId = null;
@@ -262,21 +262,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             chrome.storage.local.set({ userId: null, authToken: null, preferences: null });
             signOut(auth).catch(() => { });
             sendResponse({ success: true });
-            break;
+            return false; // Sync response
 
         case 'CAPTURE_NOW':
+            // Async flow: return true
             chrome.tabs.query({ active: true, currentWindow: true }).then(async tabs => {
                 try {
                     if (tabs[0] && tabs[0].url && !isIgnored(tabs[0].url)) {
                         await trackVisit(tabs[0].url, tabs[0].title, true);
+                        sendResponse({ success: true });
+                    } else {
+                        sendResponse({ success: false, error: 'Invalid tab for capture' });
                     }
-                    sendResponse({ success: true });
                 } catch (e) {
                     console.error('CAPTURE_NOW error:', e);
                     sendResponse({ success: false, error: e.message });
                 }
+            }).catch(err => {
+                sendResponse({ success: false, error: err.message });
             });
-            return true; // Keep channel open for async query
+            return true; // Keep channel open
+
+        default:
+            console.warn('Unknown message type:', message.type);
+            sendResponse({ success: false, error: 'Unknown message type' });
+            return false;
     }
 });
 

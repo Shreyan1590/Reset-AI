@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
+import '../services/auth_service.dart';
 import '../services/context_service.dart';
 import '../services/gemini_service.dart';
 import '../widgets/neuro_flow_score_widget.dart';
@@ -32,7 +34,6 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     if (!mounted) return;
     
     final authService = context.read<AuthService>();
-    final contextService = context.read<ContextService>();
 
     // Wait for auth to settle
     await Future.delayed(const Duration(milliseconds: 500));
