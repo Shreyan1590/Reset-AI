@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class ActiveWorkspaceCard extends StatelessWidget {
   final String title;

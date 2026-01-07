@@ -23,6 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _syncEnabled = true;
   bool _notificationsEnabled = true;
   bool _isExporting = false;
+  // ignore: unused_field
   bool _isClearing = false;
 
   @override

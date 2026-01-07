@@ -74,6 +74,19 @@ onAuthStateChanged(auth, (user) => {
         console.log('Background auth: logged out');
     }
     resolveAuth(); // Signal that we've checked auth state
+
+    // Listen to user doc for focus mode changes
+    if (user) {
+        onSnapshot(doc(db, 'users', user.uid), (doc) => {
+            if (doc.exists()) {
+                const data = doc.data();
+                if (data.focusMode !== undefined) {
+                    chrome.storage.local.set({ focusMode: data.focusMode });
+                    console.log('Synced focus mode:', data.focusMode);
+                }
+            }
+        });
+    }
 });
 
 async function ensureAuth() {

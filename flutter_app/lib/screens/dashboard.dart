@@ -10,7 +10,7 @@ import '../widgets/neuro_flow_score_widget.dart';
 import '../widgets/focus_widgets.dart';
 import '../widgets/active_workspace_card.dart';
 import '../widgets/stat_card.dart';
-import '../widgets/privacy_banner.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -442,7 +442,87 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void _showQuickResumeDialog(BuildContext context) {
-    // Hidden for now as it's not implemented
+    final contextService = context.read<ContextService>();
+    final unrecovered = contextService.uniqueActiveContexts
+        .where((c) => !c.isRecovered)
+        .toList();
+
+    if (unrecovered.isEmpty) return;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1A1A2E),
+        title: const Text('Resume Work Context?', style: TextStyle(color: Colors.white)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'You have ${unrecovered.length} active workspaces. This will open them in new tabs.',
+              style: const TextStyle(color: Colors.white70),
+            ),
+            const SizedBox(height: 16),
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: unrecovered.take(5).map((ctx) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.link, color: Colors.white54, size: 16),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            ctx.title.isNotEmpty ? ctx.title : ctx.url,
+                            style: const TextStyle(color: Colors.white, fontSize: 13),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )).toList(),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel', style: TextStyle(color: Colors.white54)),
+          ),
+          FilledButton.icon(
+            onPressed: () async {
+              Navigator.pop(context);
+              int count = 0;
+              for (final ctx in unrecovered) {
+                final url = Uri.parse(ctx.url);
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url, mode: LaunchMode.externalApplication);
+                  await contextService.markContextRecovered(ctx.id);
+                  count++;
+                  // Small delay to prevent browser blocking indiscriminately
+                  await Future.delayed(const Duration(milliseconds: 300));
+                }
+              }
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Resumed $count workspaces'),
+                    backgroundColor: const Color(0xFF10B981),
+                  ),
+                );
+              }
+            },
+            style: FilledButton.styleFrom(backgroundColor: const Color(0xFF6366F1)),
+            icon: const Icon(Icons.open_in_browser),
+            label: const Text('Resume All'),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildMainContent({required bool isMobile}) {
@@ -563,7 +643,15 @@ class _DashboardState extends State<Dashboard> {
           nextSteps: activeContext.nextSteps,
           visitCount: activeContext.visitCount,
           onResume: () async {
-            await service.markContextRecovered(activeContext.id);
+            final url = Uri.parse(activeContext.url);
+            if (await canLaunchUrl(url)) {
+              await launchUrl(url, mode: LaunchMode.externalApplication);
+              await service.markContextRecovered(activeContext.id);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Could not launch ${activeContext.url}')),
+              );
+            }
           },
           onArchive: () async {
             await service.archiveContext(activeContext.id);

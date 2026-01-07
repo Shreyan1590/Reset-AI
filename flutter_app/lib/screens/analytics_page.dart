@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:intl/intl.dart';
 import '../services/auth_service.dart';
 import '../services/context_service.dart';
 import '../services/gemini_service.dart';
@@ -783,11 +782,20 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               : focusRatio >= 50 
                   ? const Color(0xFFF59E0B)
                   : const Color(0xFFEF4444),
-          actionLabel: 'Start Focus Session',
-          onAction: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Focus session feature coming soon!')),
-            );
+          actionLabel: service.isFocusMode ? 'Stop Focus Session' : 'Start Focus Session',
+          onAction: () async {
+            final newState = !service.isFocusMode;
+            await service.toggleFocusMode(newState);
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(newState 
+                    ? 'Focus session started! Distractions will be blocked.' 
+                    : 'Focus session paused.'),
+                  backgroundColor: newState ? const Color(0xFF10B981) : Colors.orange,
+                ),
+              );
+            }
           },
         ).animate().fadeIn(duration: 500.ms, delay: 500.ms);
       },

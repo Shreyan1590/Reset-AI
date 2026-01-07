@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import '../services/context_service.dart';
 import '../services/gemini_service.dart';
 import '../models/session_model.dart';
-import '../models/context_model.dart';
 
 
 class SessionDetail extends StatelessWidget {

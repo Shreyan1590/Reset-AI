@@ -12,6 +12,72 @@ document.addEventListener('scroll', () => {
     lastInteraction = Date.now();
 });
 
+// FOCUS MODE BLOCKING
+const DISTRACTING_DOMAINS = [
+    'twitter.com', 'facebook.com', 'instagram.com', 'youtube.com',
+    'netflix.com', 'reddit.com', 'tiktok.com', 'pinterest.com'
+];
+
+function isDistracting() {
+    return DISTRACTING_DOMAINS.some(d => window.location.hostname.includes(d));
+}
+
+chrome.storage.local.get(['focusMode'], (res) => {
+    if (res.focusMode && isDistracting()) {
+        activateFocusBlocker();
+    }
+});
+
+chrome.storage.onChanged.addListener((changes) => {
+    if (changes.focusMode) {
+        if (changes.focusMode.newValue && isDistracting()) {
+            activateFocusBlocker();
+        } else if (!changes.focusMode.newValue && document.getElementById('reset-ai-focus-overlay')) {
+            location.reload();
+        }
+    }
+});
+
+function activateFocusBlocker() {
+    document.body.innerHTML = '';
+    document.body.style.overflow = 'hidden';
+
+    const overlay = document.createElement('div');
+    overlay.id = 'reset-ai-focus-overlay';
+    overlay.innerHTML = `
+        <div style="
+            position: fixed; inset: 0; background: #0F0F23; z-index: 2147483647;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: white; font-family: system-ui, sans-serif;
+        ">
+            <div style="
+                background: rgba(255,255,255,0.05); padding: 40px; border-radius: 24px;
+                text-align: center; border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+                max-width: 400px;
+            ">
+                <div style="font-size: 64px; margin-bottom: 24px;">🎯</div>
+                <h1 style="margin: 0 0 16px 0; font-size: 32px; font-weight: 700;">Focus Mode Active</h1>
+                <p style="margin: 0 0 32px 0; font-size: 16px; color: rgba(255,255,255,0.7); line-height: 1.5;">
+                    This site is blocked to help you stay in the zone. 
+                    Disable Focus Mode in Reset AI to access this page.
+                </p>
+                <button id="reset-ai-back-btn" style="
+                    background: #6366F1; color: white; border: none; padding: 16px 32px;
+                    border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer;
+                    transition: all 0.2s;
+                ">Go Back to Work</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    document.getElementById('reset-ai-back-btn').onclick = () => {
+        history.back();
+    };
+}
+
 // Track text selection
 document.addEventListener('selectionchange', () => {
     const selection = window.getSelection();

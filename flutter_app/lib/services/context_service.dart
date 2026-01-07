@@ -29,6 +29,7 @@ class ContextService extends ChangeNotifier {
   int _contextLossEvents = 0;
   double _focusScore = 75.0;
   int _distractionCount = 0;
+  bool _isFocusMode = false;
 
   // Auto-save timer
   Timer? _autoSaveTimer;
@@ -46,6 +47,7 @@ class ContextService extends ChangeNotifier {
   int get contextLossEvents => _contextLossEvents;
   double get focusScore => _focusScore;
   int get distractionCount => _distractionCount;
+  bool get isFocusMode => _isFocusMode;
 
   String? get _userId => _auth.currentUser?.uid;
 
@@ -60,7 +62,19 @@ class ContextService extends ChangeNotifier {
     });
   }
 
-  @override
+  Future<void> toggleFocusMode(bool enable) async {
+    if (_userId == null) return;
+    try {
+      await _firestore.collection('userData').doc(_userId).update({
+        'focusMode': enable,
+        'focusModeStartTime': enable ? FieldValue.serverTimestamp() : null,
+      });
+      _isFocusMode = enable;
+      notifyListeners();
+    } catch (e) {
+      print('Error toggling focus mode: $e');
+    }
+  }
   void dispose() {
     _contextsSubscription?.cancel();
     _sessionsSubscription?.cancel();
@@ -124,6 +138,17 @@ class ContextService extends ChangeNotifier {
           _calculateStats();
           notifyListeners();
         });
+
+    // Listen to user data for focus mode sync
+    _firestore.collection('userData').doc(_userId).snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        final data = snapshot.data();
+        if (data != null && data.containsKey('focusMode')) {
+          _isFocusMode = data['focusMode'] as bool;
+          notifyListeners();
+        }
+      }
+    });
   }
 
   // Fetch contexts with deduplication (fallback if no real-time)
